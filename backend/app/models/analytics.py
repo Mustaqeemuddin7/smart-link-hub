@@ -3,11 +3,16 @@ Smart Link Hub - Analytics Models
 Tracks hub visits and link clicks for analytics
 """
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from app.database import Base
+
+
+def utc_now():
+    """Return current UTC time (timezone-aware)"""
+    return datetime.now(timezone.utc)
 
 
 class HubVisit(Base):
@@ -20,7 +25,7 @@ class HubVisit(Base):
     user_agent = Column(String(500), nullable=True)
     device_type = Column(String(20), nullable=True)  # mobile, tablet, desktop
     country = Column(String(2), nullable=True)  # ISO 2-letter country code
-    visited_at = Column(DateTime, default=datetime.utcnow, index=True)
+    visited_at = Column(DateTime(timezone=True), default=utc_now, index=True)
     
     # Relationships
     hub = relationship("Hub", back_populates="visits")
@@ -40,10 +45,11 @@ class LinkClick(Base):
     user_agent = Column(String(500), nullable=True)
     device_type = Column(String(20), nullable=True)
     country = Column(String(2), nullable=True)
-    clicked_at = Column(DateTime, default=datetime.utcnow, index=True)
+    clicked_at = Column(DateTime(timezone=True), default=utc_now, index=True)
     
     # Relationships
     link = relationship("Link", back_populates="clicks")
     
     def __repr__(self):
         return f"<LinkClick {self.link_id} at {self.clicked_at}>"
+

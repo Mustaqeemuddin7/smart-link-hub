@@ -7,6 +7,7 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.config import settings
 from app.services.url_shortener import get_short_url_by_code, increment_click_count
 
 router = APIRouter(tags=["Redirect"])
@@ -41,11 +42,11 @@ async def redirect_short_url(
             detail="Hub not found or inactive"
         )
     
-    # Redirect to the public hub page
-    # In production, this would be the actual domain
-    redirect_url = f"/{hub.slug}"
+    # Redirect to the public hub page using configurable frontend URL
+    redirect_url = f"{settings.FRONTEND_URL}/{hub.slug}"
     
     return RedirectResponse(
         url=redirect_url,
         status_code=status.HTTP_307_TEMPORARY_REDIRECT
     )
+

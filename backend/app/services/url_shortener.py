@@ -53,7 +53,7 @@ def get_short_url_by_code(db: Session, code: str) -> Optional[ShortURL]:
     """Get short URL by code"""
     return db.query(ShortURL).filter(
         ShortURL.short_code == code,
-        ShortURL.is_active == True
+        ShortURL.is_active.is_(True)
     ).first()
 
 

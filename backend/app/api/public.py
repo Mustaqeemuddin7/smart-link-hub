@@ -42,7 +42,7 @@ async def get_public_hub(
     # Find hub by slug
     hub = db.query(Hub).filter(
         Hub.slug == slug.lower(),
-        Hub.is_active == True
+        Hub.is_active.is_(True)
     ).first()
     
     if not hub:
@@ -65,7 +65,7 @@ async def get_public_hub(
     # Get rules
     rules = db.query(Rule).filter(
         Rule.hub_id == hub.id,
-        Rule.is_active == True
+        Rule.is_active.is_(True)
     ).all()
     
     # Process links through rule engine
@@ -129,7 +129,7 @@ async def preview_hub(
     # Get rules
     rules = db.query(Rule).filter(
         Rule.hub_id == hub.id,
-        Rule.is_active == True
+        Rule.is_active.is_(True)
     ).all()
     
     # Process with custom context

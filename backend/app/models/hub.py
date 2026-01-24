@@ -2,11 +2,16 @@
 Smart Link Hub - Hub Model
 """
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, Text, Boolean, DateTime, ForeignKey, JSON
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from app.database import Base
+
+
+def utc_now():
+    """Return current UTC time (timezone-aware)"""
+    return datetime.now(timezone.utc)
 
 
 class Hub(Base):
@@ -20,8 +25,8 @@ class Hub(Base):
     slug = Column(String(50), unique=True, nullable=False, index=True)
     theme = Column(JSON, default=lambda: {"background": "#000000", "accent": "#22C55E"})
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=utc_now)
+    updated_at = Column(DateTime(timezone=True), default=utc_now, onupdate=utc_now)
     
     # Relationships
     owner = relationship("User", back_populates="hubs")

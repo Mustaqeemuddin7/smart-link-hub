@@ -2,11 +2,16 @@
 Smart Link Hub - Link Model
 """
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, Integer, Boolean, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from app.database import Base
+
+
+def utc_now():
+    """Return current UTC time (timezone-aware)"""
+    return datetime.now(timezone.utc)
 
 
 class Link(Base):
@@ -21,8 +26,8 @@ class Link(Base):
     position = Column(Integer, default=0)
     is_enabled = Column(Boolean, default=True)
     click_count = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=utc_now)
+    updated_at = Column(DateTime(timezone=True), default=utc_now, onupdate=utc_now)
     
     # Relationships
     hub = relationship("Hub", back_populates="links")

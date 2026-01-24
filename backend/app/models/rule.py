@@ -3,11 +3,16 @@ Smart Link Hub - Rule Model
 Rules are configurable conditions that affect link display
 """
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, String, Integer, Boolean, DateTime, ForeignKey, JSON
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from app.database import Base
+
+
+def utc_now():
+    """Return current UTC time (timezone-aware)"""
+    return datetime.now(timezone.utc)
 
 
 class Rule(Base):
@@ -42,8 +47,8 @@ class Rule(Base):
     priority = Column(Integer, default=0)  # Higher priority rules applied first
     is_active = Column(Boolean, default=True)
     target_link_ids = Column(JSON, nullable=True)  # Specific links to apply rule to (null = all)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=utc_now)
+    updated_at = Column(DateTime(timezone=True), default=utc_now, onupdate=utc_now)
     
     # Relationships
     hub = relationship("Hub", back_populates="rules")

@@ -1,14 +1,20 @@
 """
 Smart Link Hub - FastAPI Application Entry Point
 """
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.config import settings
-from app.database import engine, Base
-from app.api import api_router
-from app.api import redirect_router
+from app.database import engine, Base, SessionLocal
+
+# Configure logging
+logging.basicConfig(
+    level=logging.DEBUG if settings.DEBUG else logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
@@ -16,10 +22,10 @@ async def lifespan(app: FastAPI):
     """Application lifespan handler"""
     # Startup: Create database tables
     Base.metadata.create_all(bind=engine)
-    print("Database tables created")
+    logger.info("Database tables created")
     yield
     # Shutdown: Cleanup if needed
-    print("Application shutting down")
+    logger.info("Application shutting down")
 
 
 # Create FastAPI application
@@ -59,6 +65,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Import and include routers
+from app.api import api_router, redirect_router
+
 # Include API routes
 app.include_router(api_router)
 
@@ -66,14 +75,24 @@ app.include_router(api_router)
 app.include_router(redirect_router)
 
 
-# Health check endpoint
+# Health check endpoint with database ping
 @app.get("/health", tags=["Health"])
 async def health_check():
-    """Health check endpoint for monitoring"""
+    """Health check endpoint for monitoring - includes database connectivity test"""
+    db_status = "healthy"
+    try:
+        db = SessionLocal()
+        db.execute("SELECT 1")
+        db.close()
+    except Exception as e:
+        db_status = f"unhealthy: {str(e)}"
+        logger.error(f"Database health check failed: {e}")
+    
     return {
-        "status": "healthy",
+        "status": "healthy" if db_status == "healthy" else "degraded",
         "app": settings.APP_NAME,
-        "version": settings.APP_VERSION
+        "version": settings.APP_VERSION,
+        "database": db_status
     }
 
 
@@ -96,3 +115,4 @@ if __name__ == "__main__":
         port=8000,
         reload=settings.DEBUG
     )
+
