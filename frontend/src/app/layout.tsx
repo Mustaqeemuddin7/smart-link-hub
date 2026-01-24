@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 
 export const metadata: Metadata = {
     title: "Smart Link Hub - Your Smart Link-in-Bio Platform",
@@ -51,6 +52,7 @@ export default function RootLayout({
             </head>
             <body className="min-h-screen bg-background font-sans antialiased">
                 <ThemeProvider>
+                    <ServiceWorkerRegistration />
                     {children}
                 </ThemeProvider>
             </body>

@@ -19,6 +19,9 @@ import {
     Settings,
     Copy,
     Check,
+    QrCode,
+    Download,
+    LinkIcon,
 } from "lucide-react";
 import { hubsApi, linksApi } from "@/lib/api";
 import type { Hub, Link as LinkType, LinkCreate } from "@/types";
@@ -34,6 +37,15 @@ export default function HubDetailPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
+
+    // QR Code state
+    const [qrCode, setQrCode] = useState<string | null>(null);
+    const [qrLoading, setQrLoading] = useState(false);
+
+    // Short URL state
+    const [shortUrl, setShortUrl] = useState<{ code: string; url: string } | null>(null);
+    const [shortUrlLoading, setShortUrlLoading] = useState(false);
+    const [shortUrlCopied, setShortUrlCopied] = useState(false);
 
     // New link form
     const [showAddLink, setShowAddLink] = useState(false);
@@ -57,9 +69,93 @@ export default function HubDetailPage() {
         }
     }, [hubId]);
 
+    // Fetch QR code
+    const fetchQRCode = async () => {
+        setQrLoading(true);
+        try {
+            const token = localStorage.getItem("access_token");
+            const res = await fetch(`http://localhost:8000/api/hubs/${hubId}/qrcode/base64`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setQrCode(data.qr_code);
+            }
+        } catch (err) {
+            console.error("Failed to fetch QR code:", err);
+        } finally {
+            setQrLoading(false);
+        }
+    };
+
+    // Fetch existing short URL
+    const fetchShortUrl = async () => {
+        try {
+            const token = localStorage.getItem("access_token");
+            const res = await fetch(`http://localhost:8000/api/hubs/${hubId}/shorten`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setShortUrl({ code: data.short_code, url: data.full_short_url });
+            }
+        } catch (err) {
+            // No short URL exists, that's OK
+        }
+    };
+
+    // Create short URL
+    const createShortUrl = async () => {
+        setShortUrlLoading(true);
+        try {
+            const token = localStorage.getItem("access_token");
+            const res = await fetch(`http://localhost:8000/api/hubs/${hubId}/shorten`, {
+                method: "POST",
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setShortUrl({ code: data.short_code, url: data.full_short_url });
+            }
+        } catch (err) {
+            console.error("Failed to create short URL:", err);
+        } finally {
+            setShortUrlLoading(false);
+        }
+    };
+
+    // Copy short URL
+    const handleCopyShortUrl = async () => {
+        if (shortUrl) {
+            const success = await copyToClipboard(shortUrl.url);
+            if (success) {
+                setShortUrlCopied(true);
+                setTimeout(() => setShortUrlCopied(false), 2000);
+            }
+        }
+    };
+
+    // Download QR code
+    const downloadQRCode = () => {
+        if (!qrCode) return;
+        const link = document.createElement("a");
+        link.href = qrCode;
+        link.download = `${hub?.slug || "qrcode"}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     useEffect(() => {
         fetchData();
     }, [fetchData]);
+
+    useEffect(() => {
+        if (hubId) {
+            fetchQRCode();
+            fetchShortUrl();
+        }
+    }, [hubId]);
 
     const handleCopyUrl = async () => {
         if (hub) {
@@ -70,6 +166,7 @@ export default function HubDetailPage() {
             }
         }
     };
+
 
     const handleAddLink = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -176,8 +273,8 @@ export default function HubDetailPage() {
                                 <h1 className="text-2xl font-bold">{hub.title}</h1>
                                 <div
                                     className={`px-2 py-0.5 rounded text-xs font-medium ${hub.is_active
-                                            ? "bg-green-500/20 text-green-400"
-                                            : "bg-gray-500/20 text-gray-400"
+                                        ? "bg-green-500/20 text-green-400"
+                                        : "bg-gray-500/20 text-gray-400"
                                         }`}
                                 >
                                     {hub.is_active ? "Active" : "Inactive"}
@@ -247,6 +344,105 @@ export default function HubDetailPage() {
                         </button>
                     </div>
                 </motion.div>
+
+                {/* QR Code and Short URL Section */}
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
+                    {/* QR Code Card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="glass-card p-6"
+                    >
+                        <div className="flex items-center gap-2 mb-4">
+                            <QrCode className="w-5 h-5 text-green-500" />
+                            <h3 className="font-semibold">QR Code</h3>
+                        </div>
+
+                        {qrLoading ? (
+                            <div className="flex items-center justify-center h-40">
+                                <Loader2 className="w-6 h-6 animate-spin text-green-500" />
+                            </div>
+                        ) : qrCode ? (
+                            <div className="flex flex-col items-center">
+                                <img
+                                    src={qrCode}
+                                    alt="Hub QR Code"
+                                    className="w-40 h-40 mb-4 rounded-lg bg-white p-2"
+                                />
+                                <button
+                                    onClick={downloadQRCode}
+                                    className="flex items-center gap-2 px-4 py-2 bg-green-500 text-black rounded-lg font-medium hover:bg-green-400 transition-colors"
+                                >
+                                    <Download className="w-4 h-4" />
+                                    Download QR
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="text-center text-gray-500 py-8">
+                                Failed to load QR code
+                            </div>
+                        )}
+                    </motion.div>
+
+                    {/* Short URL Card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="glass-card p-6"
+                    >
+                        <div className="flex items-center gap-2 mb-4">
+                            <LinkIcon className="w-5 h-5 text-green-500" />
+                            <h3 className="font-semibold">Short URL</h3>
+                        </div>
+
+                        {shortUrl ? (
+                            <div className="space-y-4">
+                                <div className="bg-black/50 border border-white/10 rounded-lg p-4">
+                                    <p className="text-xs text-gray-500 mb-1">Your short URL</p>
+                                    <p className="text-lg font-mono text-green-400 break-all">
+                                        {shortUrl.url}
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={handleCopyShortUrl}
+                                    className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors w-full justify-center"
+                                >
+                                    {shortUrlCopied ? (
+                                        <>
+                                            <Check className="w-4 h-4 text-green-500" />
+                                            Copied!
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Copy className="w-4 h-4" />
+                                            Copy Short URL
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="text-center py-6">
+                                <p className="text-gray-500 mb-4">
+                                    Create a short URL for easy sharing
+                                </p>
+                                <button
+                                    onClick={createShortUrl}
+                                    disabled={shortUrlLoading}
+                                    className="flex items-center gap-2 px-4 py-2 bg-green-500 text-black rounded-lg font-medium hover:bg-green-400 transition-colors mx-auto disabled:opacity-50"
+                                >
+                                    {shortUrlLoading ? (
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                    ) : (
+                                        <LinkIcon className="w-4 h-4" />
+                                    )}
+                                    Create Short URL
+                                </button>
+                            </div>
+                        )}
+                    </motion.div>
+                </div>
 
                 {/* Links Section */}
                 <div className="mb-6 flex items-center justify-between">
@@ -359,8 +555,8 @@ export default function HubDetailPage() {
                                         <button
                                             onClick={() => handleToggleLink(link)}
                                             className={`p-2 rounded-lg transition-colors ${link.is_enabled
-                                                    ? "text-green-400 hover:bg-green-500/10"
-                                                    : "text-gray-500 hover:bg-white/5"
+                                                ? "text-green-400 hover:bg-green-500/10"
+                                                : "text-gray-500 hover:bg-white/5"
                                                 }`}
                                             title={link.is_enabled ? "Disable" : "Enable"}
                                         >
