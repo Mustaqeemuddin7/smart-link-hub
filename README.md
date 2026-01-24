@@ -1,8 +1,8 @@
-# 🔗 Smart Link Hub
+# Smart Link Hub
 
 <div align="center">
 
-![Smart Link Hub Banner](https://img.shields.io/badge/🔗_Smart_Link_Hub-Next_Gen_Link_Platform-22c55e?style=for-the-badge&labelColor=000000)
+![Smart Link Hub Banner](https://img.shields.io/badge/Smart_Link_Hub-Next_Gen_Link_Platform-22c55e?style=for-the-badge&labelColor=000000)
 
 **A Next-Generation Link-in-Bio Platform with AI-Powered Smart Routing**
 
@@ -13,37 +13,37 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-4169e1?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
 
-[Live Demo](#-demo) • [Features](#-features) • [Quick Start](#-quick-start) • [API Docs](#-api-documentation) • [Architecture](#-architecture)
+[Live Demo](#demo) • [Features](#features) • [Quick Start](#quick-start) • [API Docs](#api-documentation) • [Architecture](#architecture)
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Architecture](#-architecture)
-- [Tech Stack](#-tech-stack)
-- [Quick Start](#-quick-start)
-- [API Documentation](#-api-documentation)
-- [Smart Rule Engine](#-smart-rule-engine)
-- [Analytics Dashboard](#-analytics-dashboard)
-- [Project Structure](#-project-structure)
-- [Environment Variables](#-environment-variables)
-- [Deployment](#-deployment)
-- [Contributing](#-contributing)
+- [Overview](#overview)
+- [Features](#features)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Quick Start](#quick-start)
+- [API Documentation](#api-documentation)
+- [Smart Rule Engine](#smart-rule-engine)
+- [Analytics Dashboard](#analytics-dashboard)
+- [Project Structure](#project-structure)
+- [Environment Variables](#environment-variables)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
 
 ---
 
-## 🎯 Overview
+## Overview
 
 **Smart Link Hub** is a sophisticated Link-in-Bio platform that goes beyond traditional static link pages. It introduces **intelligent, context-aware link routing** powered by a dynamic rule engine that adapts to:
 
-- ⏰ **Time of Day** - Show different links during business hours
-- 📱 **Device Type** - Optimize for mobile, tablet, or desktop
-- 🌍 **Geographic Location** - Display region-specific content
-- 📈 **Performance Metrics** - Auto-promote high-performing links
+- **Time of Day** - Show different links during business hours
+- **Device Type** - Optimize for mobile, tablet, or desktop
+- **Geographic Location** - Display region-specific content
+- **Performance Metrics** - Auto-promote high-performing links
 
 ### Why Smart Link Hub?
 
@@ -56,37 +56,37 @@
 
 ---
 
-## ✨ Features
+## Features
 
-### 🔗 Link Hub Management
+### Link Hub Management
 - **Create Unlimited Hubs** - Each with a unique, shareable URL
 - **Custom Slugs** - SEO-friendly URLs like `yourdomain.com/your-name`
 - **Theme Customization** - Black background with vibrant green accents
 - **Drag & Drop Reordering** - Intuitive link organization
 - **Enable/Disable Links** - Quick toggle without deletion
 
-### 🧠 Smart Rule Engine
+### Smart Rule Engine
 - **Time-Based Rules** - Schedule links for specific hours
 - **Device Detection** - Mobile-first or desktop-specific links
 - **Geo-Targeting** - Country/region-based content
 - **Performance Boost** - Auto-promote high-CTR links
 - **Rule Presets** - Quick-start templates for common scenarios
 
-### 📊 Analytics Dashboard
+### Analytics Dashboard
 - **Real-Time Tracking** - Visits, clicks, and CTR
 - **Device Breakdown** - Mobile vs Tablet vs Desktop
 - **Geographic Insights** - Top countries visualization
 - **Link Performance** - Identify top and bottom performers
 - **Historical Data** - Daily/weekly/monthly trends with charts
 
-### 🎨 Premium UI/UX
+### Premium UI/UX
 - **Black & Green Theme** - Striking visual identity
 - **Glassmorphism Design** - Modern, sleek aesthetic
 - **Smooth Animations** - Framer Motion powered
 - **Fully Responsive** - Mobile, tablet, and desktop optimized
 - **QR Code Generation** - Instant shareable codes
 
-### 🔐 Security & Performance
+### Security & Performance
 - **JWT Authentication** - Secure token-based auth
 - **Rate Limiting** - API abuse prevention
 - **Input Validation** - Pydantic schema validation
@@ -95,7 +95,7 @@
 
 ---
 
-## 🏗 Architecture
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -169,7 +169,7 @@ User Visit → Public Hub → Rule Engine Processing → Personalized Links
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Backend
 | Technology | Purpose | Version |
@@ -205,7 +205,7 @@ User Visit → Public Hub → Rule Engine Processing → Personalized Links
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -216,14 +216,14 @@ Node.js >= 18.0
 PostgreSQL >= 15.0
 ```
 
-### 1️⃣ Clone Repository
+### Step 1: Clone Repository
 
 ```bash
 git clone https://github.com/Mustaqeemuddin7/smart-link-hub.git
 cd smart-link-hub
 ```
 
-### 2️⃣ Database Setup
+### Step 2: Database Setup
 
 ```bash
 # Create PostgreSQL database
@@ -232,7 +232,7 @@ CREATE DATABASE smartlinkhub;
 \q
 ```
 
-### 3️⃣ Backend Setup
+### Step 3: Backend Setup
 
 ```bash
 # Navigate to backend
@@ -274,7 +274,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 **Backend is now running at:** http://localhost:8000  
 **API Documentation:** http://localhost:8000/docs
 
-### 4️⃣ Frontend Setup
+### Step 4: Frontend Setup
 
 ```bash
 # Open new terminal, navigate to frontend
@@ -295,7 +295,7 @@ npm run dev -- -p 3001
 
 **Frontend is now running at:** http://localhost:3001
 
-### 5️⃣ Access the Application
+### Step 5: Access the Application
 
 | URL | Description |
 |-----|-------------|
@@ -307,7 +307,7 @@ npm run dev -- -p 3001
 
 ---
 
-## 📡 API Documentation
+## API Documentation
 
 ### Base URL
 ```
@@ -323,7 +323,7 @@ Authorization: Bearer <access_token>
 
 ### Endpoints Overview
 
-#### 🔐 Authentication
+#### Authentication
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
@@ -332,7 +332,7 @@ Authorization: Bearer <access_token>
 | `POST` | `/auth/refresh` | Refresh access token | No |
 | `GET` | `/auth/me` | Get current user info | Yes |
 
-#### 📦 Hubs
+#### Hubs
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
@@ -343,7 +343,7 @@ Authorization: Bearer <access_token>
 | `DELETE` | `/hubs/{hub_id}` | Delete hub | Yes |
 | `GET` | `/hubs/check-slug/{slug}` | Check slug availability | No |
 
-#### 🔗 Links
+#### Links
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
@@ -353,7 +353,7 @@ Authorization: Bearer <access_token>
 | `DELETE` | `/links/{link_id}` | Delete link | Yes |
 | `PUT` | `/hubs/{hub_id}/links/reorder` | Reorder links | Yes |
 
-#### 📜 Rules
+#### Rules
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
@@ -363,7 +363,7 @@ Authorization: Bearer <access_token>
 | `DELETE` | `/rules/{rule_id}` | Delete rule | Yes |
 | `GET` | `/rules/presets` | Get rule presets | No |
 
-#### 📊 Analytics
+#### Analytics
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
@@ -372,7 +372,7 @@ Authorization: Bearer <access_token>
 | `GET` | `/analytics/hubs/{hub_id}/daily` | Daily statistics | Yes |
 | `GET` | `/analytics/hubs/{hub_id}/top-links` | Top & bottom performers | Yes |
 
-#### 🌐 Public & Tracking
+#### Public & Tracking
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
@@ -383,13 +383,13 @@ Authorization: Bearer <access_token>
 
 ---
 
-## 🧠 Smart Rule Engine
+## Smart Rule Engine
 
 The Rule Engine is the brain of Smart Link Hub. It processes visitor context and dynamically adjusts link visibility, priority, and highlighting.
 
 ### Rule Types
 
-#### ⏰ Time-Based Rules
+#### Time-Based Rules
 Show or hide links based on time of day.
 
 ```json
@@ -409,7 +409,7 @@ Show or hide links based on time of day.
 }
 ```
 
-#### 📱 Device-Based Rules
+#### Device-Based Rules
 Optimize for specific device types.
 
 ```json
@@ -428,7 +428,7 @@ Optimize for specific device types.
 }
 ```
 
-#### 🌍 Location-Based Rules
+#### Location-Based Rules
 Target specific countries or regions.
 
 ```json
@@ -447,7 +447,7 @@ Target specific countries or regions.
 }
 ```
 
-#### 📈 Performance-Based Rules
+#### Performance-Based Rules
 Auto-promote high-performing links.
 
 ```json
@@ -503,7 +503,7 @@ Auto-promote high-performing links.
 
 ---
 
-## 📊 Analytics Dashboard
+## Analytics Dashboard
 
 ### Metrics Tracked
 
@@ -526,111 +526,111 @@ Auto-promote high-performing links.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 smart-link-hub/
 │
-├── 📂 backend/
-│   ├── 📂 alembic/                    # Database migrations
-│   │   ├── versions/                  # Migration scripts
-│   │   └── env.py                     # Alembic configuration
+├── backend/
+│   ├── alembic/                    # Database migrations
+│   │   ├── versions/               # Migration scripts
+│   │   └── env.py                  # Alembic configuration
 │   │
-│   ├── 📂 app/
-│   │   ├── 📂 api/                    # API route handlers
-│   │   │   ├── auth.py                # Authentication endpoints
-│   │   │   ├── hubs.py                # Hub CRUD operations
-│   │   │   ├── links.py               # Link management
-│   │   │   ├── rules.py               # Rule configuration
-│   │   │   ├── analytics.py           # Analytics endpoints
-│   │   │   ├── public.py              # Public hub access
-│   │   │   ├── tracking.py            # Visit/click tracking
-│   │   │   └── deps.py                # Shared dependencies
+│   ├── app/
+│   │   ├── api/                    # API route handlers
+│   │   │   ├── auth.py             # Authentication endpoints
+│   │   │   ├── hubs.py             # Hub CRUD operations
+│   │   │   ├── links.py            # Link management
+│   │   │   ├── rules.py            # Rule configuration
+│   │   │   ├── analytics.py        # Analytics endpoints
+│   │   │   ├── public.py           # Public hub access
+│   │   │   ├── tracking.py         # Visit/click tracking
+│   │   │   └── deps.py             # Shared dependencies
 │   │   │
-│   │   ├── 📂 models/                 # SQLAlchemy ORM models
-│   │   │   ├── user.py                # User model
-│   │   │   ├── hub.py                 # Hub model
-│   │   │   ├── link.py                # Link model
-│   │   │   ├── rule.py                # Rule model
-│   │   │   └── analytics.py           # Analytics model
+│   │   ├── models/                 # SQLAlchemy ORM models
+│   │   │   ├── user.py             # User model
+│   │   │   ├── hub.py              # Hub model
+│   │   │   ├── link.py             # Link model
+│   │   │   ├── rule.py             # Rule model
+│   │   │   └── analytics.py        # Analytics model
 │   │   │
-│   │   ├── 📂 schemas/                # Pydantic validation schemas
-│   │   │   ├── user.py                # User schemas
-│   │   │   ├── hub.py                 # Hub schemas
-│   │   │   ├── link.py                # Link schemas
-│   │   │   ├── rule.py                # Rule schemas
-│   │   │   └── analytics.py           # Analytics schemas
+│   │   ├── schemas/                # Pydantic validation schemas
+│   │   │   ├── user.py             # User schemas
+│   │   │   ├── hub.py              # Hub schemas
+│   │   │   ├── link.py             # Link schemas
+│   │   │   ├── rule.py             # Rule schemas
+│   │   │   └── analytics.py        # Analytics schemas
 │   │   │
-│   │   ├── 📂 services/               # Business logic layer
-│   │   │   ├── rule_engine.py         # Smart routing engine
-│   │   │   ├── analytics_service.py   # Analytics processing
-│   │   │   └── hub_service.py         # Hub operations
+│   │   ├── services/               # Business logic layer
+│   │   │   ├── rule_engine.py      # Smart routing engine
+│   │   │   ├── analytics_service.py # Analytics processing
+│   │   │   └── hub_service.py      # Hub operations
 │   │   │
-│   │   ├── 📂 utils/                  # Utility modules
-│   │   │   ├── security.py            # JWT & password hashing
-│   │   │   └── rate_limiter.py        # Rate limiting
+│   │   ├── utils/                  # Utility modules
+│   │   │   ├── security.py         # JWT & password hashing
+│   │   │   └── rate_limiter.py     # Rate limiting
 │   │   │
-│   │   ├── config.py                  # Configuration settings
-│   │   ├── database.py                # Database connection
-│   │   └── main.py                    # FastAPI application entry
+│   │   ├── config.py               # Configuration settings
+│   │   ├── database.py             # Database connection
+│   │   └── main.py                 # FastAPI application entry
 │   │
-│   ├── requirements.txt               # Python dependencies
-│   ├── Dockerfile                     # Backend Docker image
-│   └── .env                           # Environment variables (not in git)
+│   ├── requirements.txt            # Python dependencies
+│   ├── Dockerfile                  # Backend Docker image
+│   └── .env                        # Environment variables (not in git)
 │
-├── 📂 frontend/
-│   ├── 📂 src/
-│   │   ├── 📂 app/                    # Next.js App Router pages
-│   │   │   ├── page.tsx               # Landing page
-│   │   │   ├── layout.tsx             # Root layout
-│   │   │   ├── login/page.tsx         # Login page
-│   │   │   ├── register/page.tsx      # Registration page
-│   │   │   ├── [slug]/page.tsx        # Public hub display
-│   │   │   └── 📂 dashboard/          # Protected dashboard
-│   │   │       ├── page.tsx           # Dashboard home
+├── frontend/
+│   ├── src/
+│   │   ├── app/                    # Next.js App Router pages
+│   │   │   ├── page.tsx            # Landing page
+│   │   │   ├── layout.tsx          # Root layout
+│   │   │   ├── login/page.tsx      # Login page
+│   │   │   ├── register/page.tsx   # Registration page
+│   │   │   ├── [slug]/page.tsx     # Public hub display
+│   │   │   └── dashboard/          # Protected dashboard
+│   │   │       ├── page.tsx        # Dashboard home
 │   │   │       ├── analytics/page.tsx # Global analytics
-│   │   │       └── 📂 hubs/
+│   │   │       └── hubs/
 │   │   │           ├── new/page.tsx   # Create hub
 │   │   │           └── [hubId]/
 │   │   │               ├── page.tsx           # Hub management
 │   │   │               ├── rules/page.tsx     # Rule configuration
 │   │   │               └── analytics/page.tsx # Hub analytics
 │   │   │
-│   │   ├── 📂 components/             # Reusable React components
-│   │   │   └── QRCode.tsx             # QR code generator
+│   │   ├── components/             # Reusable React components
+│   │   │   └── QRCode.tsx          # QR code generator
 │   │   │
-│   │   ├── 📂 hooks/                  # Custom React hooks
-│   │   │   ├── useAuth.ts             # Authentication hook
-│   │   │   ├── useHubs.ts             # Hub management hook
-│   │   │   ├── useLinks.ts            # Link management hook
-│   │   │   └── useAnalytics.ts        # Analytics hook
+│   │   ├── hooks/                  # Custom React hooks
+│   │   │   ├── useAuth.ts          # Authentication hook
+│   │   │   ├── useHubs.ts          # Hub management hook
+│   │   │   ├── useLinks.ts         # Link management hook
+│   │   │   └── useAnalytics.ts     # Analytics hook
 │   │   │
-│   │   ├── 📂 lib/                    # Utility libraries
-│   │   │   ├── api.ts                 # API client
-│   │   │   └── utils.ts               # Helper functions
+│   │   ├── lib/                    # Utility libraries
+│   │   │   ├── api.ts              # API client
+│   │   │   └── utils.ts            # Helper functions
 │   │   │
-│   │   ├── 📂 styles/                 # Global styles
-│   │   │   └── globals.css            # Tailwind + custom CSS
+│   │   ├── styles/                 # Global styles
+│   │   │   └── globals.css         # Tailwind + custom CSS
 │   │   │
-│   │   └── 📂 types/                  # TypeScript definitions
-│   │       └── index.ts               # All type interfaces
+│   │   └── types/                  # TypeScript definitions
+│   │       └── index.ts            # All type interfaces
 │   │
-│   ├── tailwind.config.ts             # Tailwind configuration
-│   ├── next.config.js                 # Next.js configuration
-│   ├── tsconfig.json                  # TypeScript configuration
-│   ├── package.json                   # Node dependencies
-│   ├── Dockerfile                     # Frontend Docker image
-│   └── .env.local                     # Environment variables (not in git)
+│   ├── tailwind.config.ts          # Tailwind configuration
+│   ├── next.config.js              # Next.js configuration
+│   ├── tsconfig.json               # TypeScript configuration
+│   ├── package.json                # Node dependencies
+│   ├── Dockerfile                  # Frontend Docker image
+│   └── .env.local                  # Environment variables (not in git)
 │
-├── docker-compose.yml                 # Local development setup
-├── .gitignore                         # Git ignore patterns
-├── .env.example                       # Example environment file
-└── README.md                          # This documentation
+├── docker-compose.yml              # Local development setup
+├── .gitignore                      # Git ignore patterns
+├── .env.example                    # Example environment file
+└── README.md                       # This documentation
 ```
 
 ---
 
-## 🔑 Environment Variables
+## Environment Variables
 
 ### Backend (.env)
 
@@ -664,7 +664,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3001
 
 ---
 
-## 🚢 Deployment
+## Deployment
 
 ### Docker Compose (Local)
 
@@ -699,24 +699,24 @@ docker-compose down
 
 ---
 
-## 📞 Support
+## Support
 
 For issues or questions:
-- 📧 Email: mustaqeemu17@gmail.com
-- 🐛 Issues: [GitHub Issues](https://github.com/Mustaqeemuddin7/smart-link-hub/issues)
+- Email: mustaqeemu17@gmail.com
+- Issues: [GitHub Issues](https://github.com/Mustaqeemuddin7/smart-link-hub/issues)
 
 ---
 
-## 📄 License
+## License
 
-MIT License - Built with ❤️ by Mohammed Mustaqeem Uddin , Mohammed Mustafa and Mohammed Abdul Ghani Siraj
+MIT License - Built by Mohammed Mustaqeem Uddin, Mohammed Mustafa and Mohammed Abdul Ghani Siraj
 
 ---
 
 <div align="center">
 
-**⭐ Star this repo if you find it helpful!**
+**Star this repo if you find it helpful!**
 
-Made by [Mustaqeem Uddin](https://github.com/Mustaqeemuddin7) , [Mohammed Mustafa](https://github.com/MohammedMustafa786) and [Mohammed Abdul Ghani Siraj](https://github.com/Siraj-hp)
+Made by [Mustaqeem Uddin](https://github.com/Mustaqeemuddin7), [Mohammed Mustafa](https://github.com/MohammedMustafa786) and [Mohammed Abdul Ghani Siraj](https://github.com/Siraj-hp)
 
 </div>
