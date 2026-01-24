@@ -86,7 +86,7 @@ export async function copyToClipboard(text: string): Promise<boolean> {
  * Get public hub URL
  */
 export function getPublicHubUrl(slug: string): string {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001";
     return `${baseUrl}/${slug}`;
 }
 
