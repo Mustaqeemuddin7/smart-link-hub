@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Link2, Mail, Lock, User, ArrowRight, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function RegisterPage() {
     const [name, setName] = useState("");
@@ -32,7 +33,12 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+        <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-4">
+            {/* Theme Toggle - Top Right */}
+            <div className="fixed top-4 right-4 z-50">
+                <ThemeToggle />
+            </div>
+
             {/* Background Effects */}
             <div className="fixed inset-0 pointer-events-none">
                 <div className="absolute top-1/3 right-1/3 w-[500px] h-[500px] bg-green-500/10 rounded-full blur-[120px]" />
