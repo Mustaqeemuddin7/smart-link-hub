@@ -61,7 +61,7 @@
 ### 🔗 Link Hub Management
 - **Create Unlimited Hubs** - Each with a unique, shareable URL
 - **Custom Slugs** - SEO-friendly URLs like `yourdomain.com/your-name`
-- **Theme Customization** - Black background with green accents (hackathon theme)
+- **Theme Customization** - Black background with vibrant green accents
 - **Drag & Drop Reordering** - Intuitive link organization
 - **Enable/Disable Links** - Quick toggle without deletion
 

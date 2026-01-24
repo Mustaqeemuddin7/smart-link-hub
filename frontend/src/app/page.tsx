@@ -49,7 +49,7 @@ export default function HomePage() {
                 >
                     <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-2 mb-6">
                         <Sparkles className="w-4 h-4 text-green-400" />
-                        <span className="text-sm text-green-400">JPD HUB Hackathon 2026</span>
+                        <span className="text-sm text-green-400">Next-Gen Link Platform</span>
                     </div>
 
                     <h1 className="text-5xl md:text-7xl font-bold mb-6">
@@ -174,7 +174,7 @@ export default function HomePage() {
             {/* Footer */}
             <footer className="relative z-10 border-t border-white/5 py-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
-                    <p>© 2026 Smart Link Hub. Built for JPD HUB Hackathon - IIT Ropar TechFest</p>
+                    <p>© 2024 Smart Link Hub. All rights reserved.</p>
                 </div>
             </footer>
         </div>
