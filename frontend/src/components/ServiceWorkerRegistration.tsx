@@ -8,11 +8,11 @@ export function ServiceWorkerRegistration() {
             // Register service worker on mount
             navigator.serviceWorker
                 .register("/sw.js", { scope: "/" })
-                .then((registration) => {
-                    console.log("Service Worker registered:", registration.scope);
+                .then(() => {
+                    // Service worker registered successfully
                 })
-                .catch((error) => {
-                    console.log("Service Worker registration failed:", error);
+                .catch(() => {
+                    // Service worker registration failed - fail silently
                 });
         }
     }, []);
@@ -20,3 +20,4 @@ export function ServiceWorkerRegistration() {
     // This component doesn't render anything
     return null;
 }
+

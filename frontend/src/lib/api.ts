@@ -22,7 +22,11 @@ import type {
     PublicHub,
 } from "@/types";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+// API base URL - uses environment variable with development fallback
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ??
+    (typeof window !== "undefined" && window.location.hostname === "localhost"
+        ? "http://localhost:8000/api"
+        : "/api");
 
 // ============ Token Management ============
 let accessToken: string | null = null;
@@ -239,8 +243,8 @@ export const rulesApi = {
         });
     },
 
-    async getPresets(): Promise<{ presets: any[] }> {
-        return apiFetch<{ presets: any[] }>("/rules/presets");
+    async getPresets(): Promise<{ presets: Array<{ id: string; name: string; description: string; rule_type: string; condition: Record<string, unknown>; action: Record<string, unknown> }> }> {
+        return apiFetch<{ presets: Array<{ id: string; name: string; description: string; rule_type: string; condition: Record<string, unknown>; action: Record<string, unknown> }> }>("/rules/presets");
     },
 };
 

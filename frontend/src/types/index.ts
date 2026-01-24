@@ -210,3 +210,13 @@ export interface RuleListResponse {
     rules: Rule[];
     total: number;
 }
+
+// ============ Rule Preset Types ============
+export interface RulePreset {
+    id: string;
+    name: string;
+    description: string;
+    rule_type: RuleType;
+    condition: Record<string, unknown>;
+    action: Record<string, unknown>;
+}

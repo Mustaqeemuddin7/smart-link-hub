@@ -46,14 +46,12 @@ export function useServiceWorker(): ServiceWorkerState {
                     if (newWorker) {
                         newWorker.addEventListener("statechange", () => {
                             if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-                                // New version available
-                                console.log("New version available!");
+                                // New version available - could trigger UI notification
                             }
                         });
                     }
                 });
-            } catch (error) {
-                console.error("Service worker registration failed:", error);
+            } catch {
                 setState(prev => ({ ...prev, isSupported: true, isRegistered: false }));
             }
         };
@@ -88,13 +86,13 @@ export function ServiceWorkerProvider({ children }: { children: React.ReactNode 
     // Could show a banner when offline
     return (
         <>
-        { isOffline && (
-            <div className= "fixed top-0 left-0 right-0 bg-yellow-500 text-black text-center py-2 text-sm font-medium z-50" >
-        You are currently offline.Some features may not be available.
+            {isOffline && (
+                <div className="fixed top-0 left-0 right-0 bg-yellow-500 text-black text-center py-2 text-sm font-medium z-50" >
+                    You are currently offline.Some features may not be available.
                 </div>
             )
-}
-{ children }
-</>
+            }
+            {children}
+        </>
     );
 }
