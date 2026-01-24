@@ -15,8 +15,8 @@ def generate_qr_code(
     url: str,
     size: int = 256,
     format: Literal["png", "svg"] = "png",
-    fg_color: str = "#22C55E",  # Green accent
-    bg_color: str = "#000000",  # Black background
+    fg_color: str = "#000000",  # Black foreground for best scanning
+    bg_color: str = "#FFFFFF",  # White background
 ) -> bytes:
     """
     Generate a QR code image for the given URL.
@@ -81,8 +81,8 @@ def generate_qr_code(
 def generate_qr_code_base64(
     url: str,
     size: int = 256,
-    fg_color: str = "#22C55E",
-    bg_color: str = "#000000",
+    fg_color: str = "#000000",
+    bg_color: str = "#FFFFFF",
 ) -> str:
     """
     Generate a QR code and return as base64 data URL.
