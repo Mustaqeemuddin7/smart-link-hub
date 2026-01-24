@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Smart Link Hub Banner](https://img.shields.io/badge/🔗_Smart_Link_Hub-JPD_HUB_Hackathon_2026-22c55e?style=for-the-badge&labelColor=000000)
+![Smart Link Hub Banner](https://img.shields.io/badge/🔗_Smart_Link_Hub-Next_Gen_Link_Platform-22c55e?style=for-the-badge&labelColor=000000)
 
 **A Next-Generation Link-in-Bio Platform with AI-Powered Smart Routing**
 
@@ -699,18 +699,6 @@ docker-compose down
 
 ---
 
-## 🏆 Hackathon Submission
-
-| Field | Value |
-|-------|-------|
-| **Project Name** | Smart Link Hub Generator |
-| **Event** | JPD HUB Hackathon 2026 - IIT Ropar TechFest |
-| **Category** | Full-Stack Web Application |
-| **Team** | Solo |
-| **GitHub** | [github.com/Mustaqeemuddin7/smart-link-hub](https://github.com/Mustaqeemuddin7/smart-link-hub) |
-
----
-
 ## 📞 Support
 
 For issues or questions:
@@ -721,7 +709,7 @@ For issues or questions:
 
 ## 📄 License
 
-MIT License - Built with ❤️ for JPD HUB Hackathon 2026
+MIT License - Built with ❤️ by Mohammed Mustaqeem Uddin , Mohammed Mustafa and Mohammed Abdul Ghani Siraj
 
 ---
 
@@ -729,6 +717,6 @@ MIT License - Built with ❤️ for JPD HUB Hackathon 2026
 
 **⭐ Star this repo if you find it helpful!**
 
-Made with 🔗 by [Mustaqeem Uddin](https://github.com/Mustaqeemuddin7)
+Made by [Mustaqeem Uddin](https://github.com/Mustaqeemuddin7) , [Mohammed Mustafa](https://github.com/MohammedMustafa786) and [Mohammed Abdul Ghani Siraj](https://github.com/Siraj-hp)
 
 </div>
