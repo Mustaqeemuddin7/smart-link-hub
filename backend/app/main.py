@@ -8,6 +8,7 @@ from contextlib import asynccontextmanager
 from app.config import settings
 from app.database import engine, Base
 from app.api import api_router
+from app.api import redirect_router
 
 
 @asynccontextmanager
@@ -15,10 +16,10 @@ async def lifespan(app: FastAPI):
     """Application lifespan handler"""
     # Startup: Create database tables
     Base.metadata.create_all(bind=engine)
-    print("✅ Database tables created")
+    print("Database tables created")
     yield
     # Shutdown: Cleanup if needed
-    print("👋 Application shutting down")
+    print("Application shutting down")
 
 
 # Create FastAPI application
@@ -31,12 +32,15 @@ app = FastAPI(
 A smart Link-in-Bio platform with dynamic rule-based link prioritization.
 
 ### Features
-- 🔗 Create and manage link hubs
-- 📊 Analytics and click tracking
-- 🧠 Smart rule engine for dynamic link display
-- 📱 Device-aware link prioritization
-- 🌍 Location-based link filtering
-- ⏰ Time-based display rules
+- Create and manage link hubs
+- Analytics and click tracking
+- Smart rule engine for dynamic link display
+- Device-aware link prioritization
+- Location-based link filtering
+- Time-based display rules
+- QR Code generation
+- URL shortening
+- CSV/PDF analytics export
 
 ### Authentication
 Use JWT Bearer token authentication. Get tokens via `/api/auth/login`.
@@ -57,6 +61,9 @@ app.add_middleware(
 
 # Include API routes
 app.include_router(api_router)
+
+# Include redirect router at root level (no /api prefix)
+app.include_router(redirect_router)
 
 
 # Health check endpoint

@@ -2,7 +2,7 @@
 Smart Link Hub - API Package
 """
 from fastapi import APIRouter
-from app.api import auth, hubs, links, rules, public, tracking, analytics
+from app.api import auth, hubs, links, rules, public, tracking, analytics, redirect
 
 # Create main API router
 api_router = APIRouter(prefix="/api")
@@ -15,3 +15,7 @@ api_router.include_router(rules.router)
 api_router.include_router(public.router)
 api_router.include_router(tracking.router)
 api_router.include_router(analytics.router)
+
+# Redirect router (no /api prefix - goes at root level)
+redirect_router = redirect.router
+

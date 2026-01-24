@@ -26,7 +26,15 @@ httpx>=0.26.0
 # Timezone
 pytz>=2024.1
 
+# QR Code Generation
+qrcode[pil]>=7.4.2
+Pillow>=10.2.0
+
+# PDF Export
+reportlab>=4.0.8
+
 # CORS (included in FastAPI)
 
 # Development
 python-dotenv>=1.0.0
+

@@ -126,3 +126,101 @@ async def get_top_and_bottom_links(
         top_links=top_links,
         bottom_links=bottom_links
     )
+
+
+@router.get("/hubs/{hub_id}/export/csv")
+async def export_analytics_csv(
+    hub_id: UUID,
+    days: int = Query(30, ge=1, le=365),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Export analytics data as CSV file.
+    
+    Includes summary statistics, device breakdown, link performance, and daily stats.
+    """
+    from fastapi.responses import Response
+    from datetime import datetime, timedelta
+    from app.services.export_service import generate_csv_report
+    
+    hub = verify_hub_ownership(hub_id, current_user.id, db)
+    
+    analytics = AnalyticsService(db)
+    
+    # Gather all data
+    analytics_data = analytics.get_hub_analytics(str(hub_id), days)
+    link_performance = analytics.get_link_performance(str(hub_id), days)
+    daily_stats = analytics.get_daily_stats(str(hub_id), days)
+    
+    end_date = datetime.utcnow()
+    start_date = end_date - timedelta(days=days)
+    
+    csv_bytes = generate_csv_report(
+        hub_title=hub.title,
+        hub_slug=hub.slug,
+        analytics_data=analytics_data,
+        link_performance=link_performance,
+        daily_stats=daily_stats,
+        start_date=start_date,
+        end_date=end_date
+    )
+    
+    filename = f"{hub.slug}-analytics-{end_date.strftime('%Y%m%d')}.csv"
+    
+    return Response(
+        content=csv_bytes,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"'
+        }
+    )
+
+
+@router.get("/hubs/{hub_id}/export/pdf")
+async def export_analytics_pdf(
+    hub_id: UUID,
+    days: int = Query(30, ge=1, le=365),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Export analytics data as PDF report.
+    
+    Professional styled report with summary, charts data, and link performance tables.
+    """
+    from fastapi.responses import Response
+    from datetime import datetime, timedelta
+    from app.services.export_service import generate_pdf_report
+    
+    hub = verify_hub_ownership(hub_id, current_user.id, db)
+    
+    analytics = AnalyticsService(db)
+    
+    # Gather all data
+    analytics_data = analytics.get_hub_analytics(str(hub_id), days)
+    link_performance = analytics.get_link_performance(str(hub_id), days)
+    daily_stats = analytics.get_daily_stats(str(hub_id), days)
+    
+    end_date = datetime.utcnow()
+    start_date = end_date - timedelta(days=days)
+    
+    pdf_bytes = generate_pdf_report(
+        hub_title=hub.title,
+        hub_slug=hub.slug,
+        analytics_data=analytics_data,
+        link_performance=link_performance,
+        daily_stats=daily_stats,
+        start_date=start_date,
+        end_date=end_date
+    )
+    
+    filename = f"{hub.slug}-analytics-{end_date.strftime('%Y%m%d')}.pdf"
+    
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="{filename}"'
+        }
+    )

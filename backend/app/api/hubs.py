@@ -234,3 +234,91 @@ async def delete_hub(
     
     db.delete(hub)
     db.commit()
+
+
+@router.get("/{hub_id}/qrcode")
+async def get_hub_qr_code(
+    hub_id: UUID,
+    size: int = Query(256, ge=128, le=512),
+    fg_color: str = Query("#22C55E", description="Foreground color (hex)"),
+    bg_color: str = Query("#000000", description="Background color (hex)"),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Generate and return a QR code for the hub's public URL.
+    
+    - **size**: QR code size in pixels (128-512)
+    - **fg_color**: Foreground/module color (hex, e.g., #22C55E)
+    - **bg_color**: Background color (hex, e.g., #000000)
+    
+    Returns PNG image bytes.
+    """
+    from fastapi.responses import Response
+    from app.services.qr_service import generate_qr_code
+    from app.config import settings
+    
+    hub = db.query(Hub).filter(
+        Hub.id == hub_id,
+        Hub.user_id == current_user.id
+    ).first()
+    
+    if not hub:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Hub not found"
+        )
+    
+    # Generate public URL
+    # In production, this would be the actual domain
+    public_url = f"https://smartlinkhub.app/{hub.slug}"
+    
+    # Generate QR code
+    image_bytes = generate_qr_code(
+        url=public_url,
+        size=size,
+        fg_color=fg_color,
+        bg_color=bg_color
+    )
+    
+    return Response(
+        content=image_bytes,
+        media_type="image/png",
+        headers={
+            "Content-Disposition": f'attachment; filename="{hub.slug}-qr.png"'
+        }
+    )
+
+
+@router.get("/{hub_id}/qrcode/base64")
+async def get_hub_qr_code_base64(
+    hub_id: UUID,
+    size: int = Query(256, ge=128, le=512),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Generate and return a QR code as base64 data URL.
+    Useful for embedding in web pages without separate image requests.
+    """
+    from app.services.qr_service import generate_qr_code_base64
+    
+    hub = db.query(Hub).filter(
+        Hub.id == hub_id,
+        Hub.user_id == current_user.id
+    ).first()
+    
+    if not hub:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Hub not found"
+        )
+    
+    public_url = f"https://smartlinkhub.app/{hub.slug}"
+    
+    data_url = generate_qr_code_base64(
+        url=public_url,
+        size=size
+    )
+    
+    return {"qr_code": data_url, "url": public_url}

@@ -93,6 +93,13 @@
 - **CORS Protection** - Configurable origins
 - **Password Hashing** - Bcrypt encryption
 
+### Bonus Features
+- **QR Code Generation** - Scannable QR codes for hub URLs with download support
+- **URL Shortening** - Short links with redirect tracking (`/s/{code}`)
+- **Dark/Light Mode** - Auto-detect system preference with manual toggle
+- **Offline Support** - Service worker PWA with cached fallback page
+- **Export Analytics** - Download reports as CSV or PDF
+
 ---
 
 ## Architecture
