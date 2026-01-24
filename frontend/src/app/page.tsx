@@ -174,7 +174,7 @@ export default function HomePage() {
             {/* Footer */}
             <footer className="relative z-10 border-t border-white/5 py-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
-                    <p>© 2024 Smart Link Hub. All rights reserved.</p>
+                    <p>Your links. One hub. Unlimited impact.</p>
                 </div>
             </footer>
         </div>

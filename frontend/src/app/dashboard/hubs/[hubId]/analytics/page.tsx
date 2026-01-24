@@ -14,6 +14,8 @@ import {
     Calendar,
     Globe,
     Smartphone,
+    Download,
+    FileText,
 } from "lucide-react";
 import {
     LineChart,
@@ -37,13 +39,42 @@ export default function AnalyticsPage() {
     const params = useParams();
     const hubId = params.hubId as string;
     const [days, setDays] = useState(30);
+    const [exporting, setExporting] = useState<"csv" | "pdf" | null>(null);
 
     const { summary, linkPerformance, dailyStats, loading, error, refresh } = useAnalytics(hubId, days);
 
+    const handleExport = async (format: "csv" | "pdf") => {
+        setExporting(format);
+        try {
+            const token = localStorage.getItem("access_token");
+            const response = await fetch(
+                `http://localhost:8000/api/analytics/hubs/${hubId}/export/${format}?days=${days}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `analytics-${hubId}.${format}`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }
+        } catch (err) {
+            console.error("Export failed:", err);
+        } finally {
+            setExporting(null);
+        }
+    };
+
     if (loading) {
         return (
-            <div className="min-h-screen bg-black flex items-center justify-center">
-                <Loader2 className="w-8 h-8 text-green-500 animate-spin" />
+            <div className="min-h-screen bg-background flex items-center justify-center">
+                <Loader2 className="w-8 h-8 text-primary animate-spin" />
             </div>
         );
     }
@@ -72,15 +103,15 @@ export default function AnalyticsPage() {
         : [];
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-background text-foreground">
             <div className="fixed inset-0 pointer-events-none">
-                <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-green-500/5 rounded-full blur-[120px]" />
+                <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]" />
             </div>
 
             <div className="relative z-10 max-w-6xl mx-auto px-4 py-8">
                 <Link
                     href={`/dashboard/hubs/${hubId}`}
-                    className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-6 transition-colors"
+                    className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6 transition-colors"
                 >
                     <ArrowLeft className="w-4 h-4" />
                     Back to Hub
@@ -89,22 +120,51 @@ export default function AnalyticsPage() {
                 <div className="flex items-center justify-between mb-8">
                     <div>
                         <h1 className="text-2xl font-bold flex items-center gap-3">
-                            <BarChart3 className="w-6 h-6 text-green-500" />
+                            <BarChart3 className="w-6 h-6 text-primary" />
                             Analytics
                         </h1>
-                        <p className="text-gray-400 mt-1">Track your hub's performance</p>
+                        <p className="text-muted-foreground mt-1">Track your hub's performance</p>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-gray-500" />
-                        <select
-                            value={days}
-                            onChange={(e) => setDays(Number(e.target.value))}
-                            className="bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-white"
+                    <div className="flex items-center gap-3">
+                        {/* Export Buttons */}
+                        <button
+                            onClick={() => handleExport("csv")}
+                            disabled={exporting !== null}
+                            className="flex items-center gap-2 px-3 py-2 bg-card border border-border rounded-lg hover:border-primary/50 transition-colors text-sm disabled:opacity-50"
                         >
-                            <option value={7}>Last 7 days</option>
-                            <option value={30}>Last 30 days</option>
-                            <option value={90}>Last 90 days</option>
-                        </select>
+                            {exporting === "csv" ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                                <Download className="w-4 h-4" />
+                            )}
+                            CSV
+                        </button>
+                        <button
+                            onClick={() => handleExport("pdf")}
+                            disabled={exporting !== null}
+                            className="flex items-center gap-2 px-3 py-2 bg-card border border-border rounded-lg hover:border-primary/50 transition-colors text-sm disabled:opacity-50"
+                        >
+                            {exporting === "pdf" ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                                <FileText className="w-4 h-4" />
+                            )}
+                            PDF
+                        </button>
+
+                        {/* Date Selector */}
+                        <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-muted-foreground" />
+                            <select
+                                value={days}
+                                onChange={(e) => setDays(Number(e.target.value))}
+                                className="bg-card border border-border rounded-lg px-3 py-2"
+                            >
+                                <option value={7}>Last 7 days</option>
+                                <option value={30}>Last 30 days</option>
+                                <option value={90}>Last 90 days</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -328,10 +388,10 @@ export default function AnalyticsPage() {
                                             <td className="py-3">
                                                 <span
                                                     className={`px-2 py-0.5 rounded text-xs font-medium ${link.ctr > 10
-                                                            ? "bg-green-500/20 text-green-400"
-                                                            : link.ctr > 5
-                                                                ? "bg-yellow-500/20 text-yellow-400"
-                                                                : "bg-gray-500/20 text-gray-400"
+                                                        ? "bg-green-500/20 text-green-400"
+                                                        : link.ctr > 5
+                                                            ? "bg-yellow-500/20 text-yellow-400"
+                                                            : "bg-gray-500/20 text-gray-400"
                                                         }`}
                                                 >
                                                     {link.ctr}%

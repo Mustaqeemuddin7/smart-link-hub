@@ -322,3 +322,78 @@ async def get_hub_qr_code_base64(
     )
     
     return {"qr_code": data_url, "url": public_url}
+
+
+@router.post("/{hub_id}/shorten")
+async def create_short_url(
+    hub_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Create a short URL for the hub.
+    
+    Returns the short code that can be used with /s/{short_code} for redirection.
+    """
+    from app.services.url_shortener import create_short_url as create_short
+    
+    hub = db.query(Hub).filter(
+        Hub.id == hub_id,
+        Hub.user_id == current_user.id
+    ).first()
+    
+    if not hub:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Hub not found"
+        )
+    
+    short_url = create_short(db, str(hub_id))
+    
+    return {
+        "short_code": short_url.short_code,
+        "short_url": f"/s/{short_url.short_code}",
+        "full_short_url": f"http://localhost:8000/s/{short_url.short_code}",
+        "hub_slug": hub.slug,
+        "click_count": short_url.click_count
+    }
+
+
+@router.get("/{hub_id}/shorten")
+async def get_short_url(
+    hub_id: UUID,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Get the existing short URL for a hub.
+    """
+    from app.services.url_shortener import get_short_url_by_hub
+    
+    hub = db.query(Hub).filter(
+        Hub.id == hub_id,
+        Hub.user_id == current_user.id
+    ).first()
+    
+    if not hub:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Hub not found"
+        )
+    
+    short_url = get_short_url_by_hub(db, str(hub_id))
+    
+    if not short_url:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No short URL exists for this hub. Create one first with POST."
+        )
+    
+    return {
+        "short_code": short_url.short_code,
+        "short_url": f"/s/{short_url.short_code}",
+        "full_short_url": f"http://localhost:8000/s/{short_url.short_code}",
+        "hub_slug": hub.slug,
+        "click_count": short_url.click_count,
+        "is_active": short_url.is_active
+    }

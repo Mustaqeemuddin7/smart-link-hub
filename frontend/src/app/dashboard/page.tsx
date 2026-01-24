@@ -17,6 +17,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useHubs } from "@/hooks/useHubs";
 import { formatNumber, getPublicHubUrl } from "@/lib/utils";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function DashboardPage() {
     const { user, loading: authLoading, logout, isAuthenticated } = useAuth();
@@ -31,19 +32,19 @@ export default function DashboardPage() {
 
     if (authLoading || !isAuthenticated) {
         return (
-            <div className="min-h-screen bg-black flex items-center justify-center">
-                <Loader2 className="w-8 h-8 text-green-500 animate-spin" />
+            <div className="min-h-screen bg-background flex items-center justify-center">
+                <Loader2 className="w-8 h-8 text-primary animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-background text-foreground">
             {/* Sidebar */}
-            <aside className="fixed left-0 top-0 h-full w-64 border-r border-white/5 bg-black/50 backdrop-blur-xl z-50">
+            <aside className="fixed left-0 top-0 h-full w-64 border-r border-border bg-card/50 backdrop-blur-xl z-50">
                 <div className="p-6">
                     <Link href="/dashboard" className="flex items-center gap-2">
-                        <Link2 className="w-8 h-8 text-green-500" />
+                        <Link2 className="w-8 h-8 text-primary" />
                         <span className="text-xl font-bold gradient-text">Smart Link Hub</span>
                     </Link>
                 </div>
@@ -51,35 +52,36 @@ export default function DashboardPage() {
                 <nav className="px-4 space-y-2">
                     <Link
                         href="/dashboard"
-                        className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/5 text-white"
+                        className="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-foreground"
                     >
                         <Link2 className="w-5 h-5" />
                         My Hubs
                     </Link>
                     <Link
                         href="/dashboard/analytics"
-                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+                        className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     >
                         <BarChart3 className="w-5 h-5" />
                         Analytics
                     </Link>
                 </nav>
 
-                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/5">
+                <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-border">
                     <div className="flex items-center gap-3 mb-4 px-4">
-                        <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
-                            <span className="text-green-500 font-semibold">
+                        <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                            <span className="text-primary font-semibold">
                                 {user?.name?.charAt(0).toUpperCase()}
                             </span>
                         </div>
                         <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium truncate">{user?.name}</p>
-                            <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                            <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
                         </div>
+                        <ThemeToggle />
                     </div>
                     <button
                         onClick={logout}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-white transition-colors"
+                        className="w-full flex items-center gap-2 px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
                     >
                         <LogOut className="w-4 h-4" />
                         Sign Out
