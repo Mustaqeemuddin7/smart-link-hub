@@ -6,5 +6,7 @@ from app.models.hub import Hub
 from app.models.link import Link
 from app.models.rule import Rule
 from app.models.analytics import HubVisit, LinkClick
+from app.models.short_url import ShortURL
 
-__all__ = ["User", "Hub", "Link", "Rule", "HubVisit", "LinkClick"]
+__all__ = ["User", "Hub", "Link", "Rule", "HubVisit", "LinkClick", "ShortURL"]
+
