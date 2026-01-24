@@ -269,9 +269,9 @@ async def get_hub_qr_code(
             detail="Hub not found"
         )
     
-    # Generate public URL
-    # In production, this would be the actual domain
-    public_url = f"https://smartlinkhub.app/{hub.slug}"
+    # Generate public URL using configurable frontend URL
+    from app.config import settings
+    public_url = f"{settings.FRONTEND_URL}/{hub.slug}"
     
     # Generate QR code
     image_bytes = generate_qr_code(
@@ -314,7 +314,8 @@ async def get_hub_qr_code_base64(
             detail="Hub not found"
         )
     
-    public_url = f"https://smartlinkhub.app/{hub.slug}"
+    from app.config import settings
+    public_url = f"{settings.FRONTEND_URL}/{hub.slug}"
     
     data_url = generate_qr_code_base64(
         url=public_url,
@@ -322,6 +323,7 @@ async def get_hub_qr_code_base64(
     )
     
     return {"qr_code": data_url, "url": public_url}
+
 
 
 @router.post("/{hub_id}/shorten")
@@ -350,10 +352,11 @@ async def create_short_url(
     
     short_url = create_short(db, str(hub_id))
     
+    from app.config import settings
     return {
         "short_code": short_url.short_code,
         "short_url": f"/s/{short_url.short_code}",
-        "full_short_url": f"http://localhost:8000/s/{short_url.short_code}",
+        "full_short_url": f"{settings.APP_BASE_URL}/s/{short_url.short_code}",
         "hub_slug": hub.slug,
         "click_count": short_url.click_count
     }
@@ -389,10 +392,11 @@ async def get_short_url(
             detail="No short URL exists for this hub. Create one first with POST."
         )
     
+    from app.config import settings
     return {
         "short_code": short_url.short_code,
         "short_url": f"/s/{short_url.short_code}",
-        "full_short_url": f"http://localhost:8000/s/{short_url.short_code}",
+        "full_short_url": f"{settings.APP_BASE_URL}/s/{short_url.short_code}",
         "hub_slug": hub.slug,
         "click_count": short_url.click_count,
         "is_active": short_url.is_active

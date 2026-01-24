@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     APP_NAME: str = "Smart Link Hub"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
+    APP_BASE_URL: str = "http://localhost:8000"  # Base URL for short URLs and QR codes
+    FRONTEND_URL: str = "http://localhost:3001"  # Frontend URL for redirects
     
     # Database
     DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/smartlinkhub"
