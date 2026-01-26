@@ -17,7 +17,6 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useHubs } from "@/hooks/useHubs";
 import { formatNumber, getPublicHubUrl } from "@/lib/utils";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function DashboardPage() {
     const { user, loading: authLoading, logout, isAuthenticated } = useAuth();
@@ -77,7 +76,6 @@ export default function DashboardPage() {
                             <p className="text-sm font-medium truncate">{user?.name}</p>
                             <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
                         </div>
-                        <ThemeToggle />
                     </div>
                     <button
                         onClick={logout}

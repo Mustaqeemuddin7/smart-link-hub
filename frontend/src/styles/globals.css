@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* Core Colors - Dark Theme (Default) */
+    /* Dark Theme (Default & Only) */
     --background: 0 0% 0%;           /* Pure Black */
     --foreground: 0 0% 98%;          /* Almost White */
     
@@ -34,37 +34,6 @@
     --ring: 142 71% 45%;
     
     --radius: 0.75rem;
-  }
-
-  /* Light Mode Theme */
-  [data-theme="light"] {
-    --background: 210 40% 98%;        /* Light gray-blue */
-    --foreground: 222 47% 11%;        /* Dark slate */
-    
-    --card: 0 0% 100%;               /* White */
-    --card-foreground: 222 47% 11%;
-    
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    
-    --primary: 142 76% 36%;          /* Darker Green for contrast */
-    --primary-foreground: 0 0% 100%;
-    
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    
-    --accent: 142 76% 36%;
-    --accent-foreground: 0 0% 100%;
-    
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 142 76% 36%;
   }
 }
 
@@ -101,7 +70,7 @@
   background: hsl(var(--primary));
 }
 
-/* Glass Card Effect - Works for both themes */
+/* Glass Card Effect */
 .glass-card {
   background: hsl(var(--card) / 0.8);
   backdrop-filter: blur(16px);
@@ -109,12 +78,6 @@
   border: 1px solid hsl(var(--primary) / 0.2);
   border-radius: var(--radius);
   transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-[data-theme="light"] .glass-card {
-  background: hsl(var(--card) / 0.9);
-  border: 1px solid hsl(var(--border));
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
 
 /* Glow Effects */

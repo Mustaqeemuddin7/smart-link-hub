@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import "@/styles/globals.css";
-import { ThemeProvider } from "@/contexts/ThemeContext";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 
 export const metadata: Metadata = {
@@ -36,33 +35,10 @@ export default function RootLayout({
                     rel="stylesheet"
                 />
                 <link rel="apple-touch-icon" href="/icon-192.png" />
-                {/* Prevent flash of wrong theme */}
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `
-                            (function() {
-                                try {
-                                    const theme = localStorage.getItem('theme');
-                                    if (theme === 'light') {
-                                        document.documentElement.setAttribute('data-theme', 'light');
-                                    } else if (theme === 'dark') {
-                                        document.documentElement.setAttribute('data-theme', 'dark');
-                                    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-                                        document.documentElement.setAttribute('data-theme', 'light');
-                                    } else {
-                                        document.documentElement.setAttribute('data-theme', 'dark');
-                                    }
-                                } catch (e) {}
-                            })();
-                        `,
-                    }}
-                />
             </head>
             <body className="min-h-screen bg-background font-sans antialiased">
-                <ThemeProvider>
-                    <ServiceWorkerRegistration />
-                    {children}
-                </ThemeProvider>
+                <ServiceWorkerRegistration />
+                {children}
             </body>
         </html>
     );
