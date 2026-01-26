@@ -6,25 +6,142 @@ import { motion } from "framer-motion";
 import { Link2, Mail, Lock, User, ArrowRight, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
+interface FieldErrors {
+    name?: string;
+    email?: string;
+    password?: string[];
+    confirmPassword?: string;
+}
+
 export default function RegisterPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const { register, loading, error } = useAuth();
-    const [validationError, setValidationError] = useState<string | null>(null);
+    const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+    const [touched, setTouched] = useState({
+        name: false,
+        email: false,
+        password: false,
+        confirmPassword: false,
+    });
+
+    const validatePassword = (pwd: string): string[] => {
+        const errors: string[] = [];
+
+        if (pwd.length < 8) {
+            errors.push("Password must be at least 8 characters long");
+        }
+        if (!/[A-Z]/.test(pwd)) {
+            errors.push("Password must contain at least one uppercase letter");
+        }
+        if (!/[a-z]/.test(pwd)) {
+            errors.push("Password must contain at least one lowercase letter");
+        }
+        if (!/\d/.test(pwd)) {
+            errors.push("Password must contain at least one number");
+        }
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(pwd)) {
+            errors.push("Password must contain at least one special character (!@#$%^&*(),.?\":{}|<>)");
+        }
+
+        return errors;
+    };
+
+    const validateForm = (): boolean => {
+        const errors: FieldErrors = {};
+
+        // Name validation
+        if (!name.trim()) {
+            errors.name = "Name is required";
+        } else if (name.trim().length > 100) {
+            errors.name = "Name must be less than 100 characters";
+        }
+
+        // Email validation
+        if (!email.trim()) {
+            errors.email = "Email is required";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            errors.email = "Please enter a valid email address";
+        }
+
+        // Password validation
+        const pwdErrors = validatePassword(password);
+        if (pwdErrors.length > 0) {
+            errors.password = pwdErrors;
+        }
+
+        // Confirm password validation
+        if (!confirmPassword) {
+            errors.confirmPassword = "Please confirm your password";
+        } else if (password !== confirmPassword) {
+            errors.confirmPassword = "Passwords do not match";
+        }
+
+        setFieldErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+    const handleBlur = (field: keyof typeof touched) => {
+        setTouched({ ...touched, [field]: true });
+
+        // Validate specific field on blur
+        const errors: FieldErrors = { ...fieldErrors };
+
+        if (field === 'password') {
+            const pwdErrors = validatePassword(password);
+            if (pwdErrors.length > 0) {
+                errors.password = pwdErrors;
+            } else {
+                delete errors.password;
+            }
+
+            // Also check confirm password if it's been touched
+            if (touched.confirmPassword && confirmPassword) {
+                if (password !== confirmPassword) {
+                    errors.confirmPassword = "Passwords do not match";
+                } else {
+                    delete errors.confirmPassword;
+                }
+            }
+        } else if (field === 'confirmPassword') {
+            if (password !== confirmPassword) {
+                errors.confirmPassword = "Passwords do not match";
+            } else {
+                delete errors.confirmPassword;
+            }
+        } else if (field === 'name') {
+            if (!name.trim()) {
+                errors.name = "Name is required";
+            } else {
+                delete errors.name;
+            }
+        } else if (field === 'email') {
+            if (!email.trim()) {
+                errors.email = "Email is required";
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                errors.email = "Please enter a valid email address";
+            } else {
+                delete errors.email;
+            }
+        }
+
+        setFieldErrors(errors);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setValidationError(null);
 
-        if (password !== confirmPassword) {
-            setValidationError("Passwords do not match");
-            return;
-        }
+        // Mark all fields as touched
+        setTouched({
+            name: true,
+            email: true,
+            password: true,
+            confirmPassword: true,
+        });
 
-        if (password.length < 8) {
-            setValidationError("Password must be at least 8 characters");
+        if (!validateForm()) {
             return;
         }
 
@@ -59,9 +176,9 @@ export default function RegisterPage() {
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
-                        {(error || validationError) && (
+                        {error && (
                             <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg text-sm">
-                                {error || validationError}
+                                {error}
                             </div>
                         )}
 
@@ -76,11 +193,16 @@ export default function RegisterPage() {
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
+                                    onBlur={() => handleBlur('name')}
                                     placeholder="Your Name"
-                                    className="w-full bg-black/50 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder:text-gray-500 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors"
+                                    className={`w-full bg-black/50 border rounded-lg pl-10 pr-4 py-3 text-white placeholder:text-gray-500 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors ${touched.name && fieldErrors.name ? 'border-red-500/50' : 'border-white/10'
+                                        }`}
                                     required
                                 />
                             </div>
+                            {touched.name && fieldErrors.name && (
+                                <p className="text-red-400 text-xs mt-1">{fieldErrors.name}</p>
+                            )}
                         </div>
 
                         <div className="space-y-2">
@@ -94,11 +216,16 @@ export default function RegisterPage() {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    onBlur={() => handleBlur('email')}
                                     placeholder="you@example.com"
-                                    className="w-full bg-black/50 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder:text-gray-500 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors"
+                                    className={`w-full bg-black/50 border rounded-lg pl-10 pr-4 py-3 text-white placeholder:text-gray-500 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors ${touched.email && fieldErrors.email ? 'border-red-500/50' : 'border-white/10'
+                                        }`}
                                     required
                                 />
                             </div>
+                            {touched.email && fieldErrors.email && (
+                                <p className="text-red-400 text-xs mt-1">{fieldErrors.email}</p>
+                            )}
                         </div>
 
                         <div className="space-y-2">
@@ -112,12 +239,20 @@ export default function RegisterPage() {
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    onBlur={() => handleBlur('password')}
                                     placeholder="••••••••"
-                                    className="w-full bg-black/50 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder:text-gray-500 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors"
+                                    className={`w-full bg-black/50 border rounded-lg pl-10 pr-4 py-3 text-white placeholder:text-gray-500 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors ${touched.password && fieldErrors.password ? 'border-red-500/50' : 'border-white/10'
+                                        }`}
                                     required
-                                    minLength={8}
                                 />
                             </div>
+                            {touched.password && fieldErrors.password && (
+                                <div className="space-y-1 mt-1">
+                                    {fieldErrors.password.map((error, index) => (
+                                        <p key={index} className="text-red-400 text-xs">• {error}</p>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
                         <div className="space-y-2">
@@ -131,11 +266,16 @@ export default function RegisterPage() {
                                     type="password"
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
+                                    onBlur={() => handleBlur('confirmPassword')}
                                     placeholder="••••••••"
-                                    className="w-full bg-black/50 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white placeholder:text-gray-500 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors"
+                                    className={`w-full bg-black/50 border rounded-lg pl-10 pr-4 py-3 text-white placeholder:text-gray-500 focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors ${touched.confirmPassword && fieldErrors.confirmPassword ? 'border-red-500/50' : 'border-white/10'
+                                        }`}
                                     required
                                 />
                             </div>
+                            {touched.confirmPassword && fieldErrors.confirmPassword && (
+                                <p className="text-red-400 text-xs mt-1">{fieldErrors.confirmPassword}</p>
+                            )}
                         </div>
 
                         <button
