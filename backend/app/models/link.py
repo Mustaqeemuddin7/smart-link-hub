@@ -19,7 +19,7 @@ class Link(Base):
     __tablename__ = "links"
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    hub_id = Column(UUID(as_uuid=True), ForeignKey("hubs.id"), nullable=False)
+    hub_id = Column(UUID(as_uuid=True), ForeignKey("hubs.id", ondelete="CASCADE"), nullable=False)
     title = Column(String(100), nullable=False)
     url = Column(String(2048), nullable=False)
     icon = Column(String(50), nullable=True)  # Icon name or emoji

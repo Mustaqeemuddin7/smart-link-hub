@@ -39,7 +39,7 @@ class Rule(Base):
     __tablename__ = "rules"
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    hub_id = Column(UUID(as_uuid=True), ForeignKey("hubs.id"), nullable=False)
+    hub_id = Column(UUID(as_uuid=True), ForeignKey("hubs.id", ondelete="CASCADE"), nullable=False)
     name = Column(String(100), nullable=False)
     rule_type = Column(String(50), nullable=False)  # time, device, location, performance
     condition = Column(JSON, nullable=False)

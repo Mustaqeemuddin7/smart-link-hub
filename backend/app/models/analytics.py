@@ -20,7 +20,7 @@ class HubVisit(Base):
     __tablename__ = "hub_visits"
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    hub_id = Column(UUID(as_uuid=True), ForeignKey("hubs.id"), nullable=False)
+    hub_id = Column(UUID(as_uuid=True), ForeignKey("hubs.id", ondelete="CASCADE"), nullable=False)
     visitor_ip = Column(String(45), nullable=True)  # Supports IPv6, anonymized
     user_agent = Column(String(500), nullable=True)
     device_type = Column(String(20), nullable=True)  # mobile, tablet, desktop
@@ -39,8 +39,8 @@ class LinkClick(Base):
     __tablename__ = "link_clicks"
     
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    link_id = Column(UUID(as_uuid=True), ForeignKey("links.id"), nullable=False)
-    hub_id = Column(UUID(as_uuid=True), ForeignKey("hubs.id"), nullable=False)
+    link_id = Column(UUID(as_uuid=True), ForeignKey("links.id", ondelete="CASCADE"), nullable=False)
+    hub_id = Column(UUID(as_uuid=True), ForeignKey("hubs.id", ondelete="CASCADE"), nullable=False)
     visitor_ip = Column(String(45), nullable=True)
     user_agent = Column(String(500), nullable=True)
     device_type = Column(String(20), nullable=True)

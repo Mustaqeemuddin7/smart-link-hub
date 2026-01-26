@@ -27,7 +27,7 @@ class ShortURL(Base):
     updated_at = Column(DateTime(timezone=True), default=utc_now, onupdate=utc_now)
     
     # Relationship
-    hub = relationship("Hub", backref="short_url")
+    hub = relationship("Hub", back_populates="short_url")
     
     def __repr__(self):
         return f"<ShortURL {self.short_code}>"

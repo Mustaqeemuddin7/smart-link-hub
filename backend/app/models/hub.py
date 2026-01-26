@@ -33,6 +33,7 @@ class Hub(Base):
     links = relationship("Link", back_populates="hub", cascade="all, delete-orphan", order_by="Link.position")
     rules = relationship("Rule", back_populates="hub", cascade="all, delete-orphan")
     visits = relationship("HubVisit", back_populates="hub", cascade="all, delete-orphan")
+    short_url = relationship("ShortURL", back_populates="hub", cascade="all, delete-orphan", uselist=False)
     
     def __repr__(self):
         return f"<Hub {self.slug}>"
