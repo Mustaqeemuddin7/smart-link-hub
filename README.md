@@ -13,7 +13,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-4169e1?style=flat-square&logo=postgresql&logoColor=white)](https://postgresql.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
 
-[Live Demo](#demo) • [Features](#features) • [Quick Start](#quick-start) • [API Docs](#api-documentation) • [Architecture](#architecture)
+[Features](#features) • [Quick Start](#quick-start) • [API Docs](#api-documentation) • [Architecture](#architecture)
 
 </div>
 
@@ -258,10 +258,9 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Create .env file
-# Edit with your database credentials
 cat > .env << EOF
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/smartlinkhub
-SECRET_KEY=your-super-secret-key-here
+DATABASE_URL=postgresql://user:password@localhost:5432/smartlinkhub
+SECRET_KEY=<generate-a-strong-secret-key>
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 REFRESH_TOKEN_EXPIRE_DAYS=7
@@ -278,8 +277,8 @@ alembic upgrade head
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-**Backend is now running at:** http://localhost:8000  
-**API Documentation:** http://localhost:8000/docs
+**Backend is now running at:** https://smart-link-hub-backend.onrender.com  
+**API Documentation:** https://smart-link-hub-backend.onrender.com/docs
 
 ### Step 4: Frontend Setup
 
@@ -292,15 +291,15 @@ npm install
 
 # Create environment file
 cat > .env.local << EOF
-NEXT_PUBLIC_API_URL=http://localhost:8000/api
-NEXT_PUBLIC_APP_URL=http://localhost:3001
+NEXT_PUBLIC_API_URL=https://smart-link-hub-backend.onrender.com/api
+NEXT_PUBLIC_APP_URL=https://smart-link-hub.vercel.app
 EOF
 
 # Start development server
 npm run dev -- -p 3001
 ```
 
-**Frontend is now running at:** http://localhost:3001
+**Frontend is now running at:** https://smart-link-hub.vercel.app
 
 ### Step 5: Access the Application
 
@@ -318,7 +317,7 @@ npm run dev -- -p 3001
 
 ### Base URL
 ```
-http://localhost:8000/api
+https://smart-link-hub-backend.onrender.com/api
 ```
 
 ### Authentication
@@ -643,10 +642,10 @@ smart-link-hub/
 
 ```env
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/smartlinkhub
+DATABASE_URL=postgresql://user:password@host:5432/database
 
 # Security
-SECRET_KEY=your-256-bit-secret-key
+SECRET_KEY=<generate-a-strong-secret-key>
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 REFRESH_TOKEN_EXPIRE_DAYS=7
@@ -665,8 +664,8 @@ DEBUG=true
 ### Frontend (.env.local)
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8000/api
-NEXT_PUBLIC_APP_URL=http://localhost:3001
+NEXT_PUBLIC_API_URL=https://smart-link-hub-backend.onrender.com/api
+NEXT_PUBLIC_APP_URL=smart-link-hub-phi.vercel.app
 ```
 
 ---
