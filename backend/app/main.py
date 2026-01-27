@@ -1,15 +1,19 @@
 """
 Smart Link Hub - FastAPI Application Entry Point
 """
+
 import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+from sqlalchemy import text
 
 from app.config import settings
 from app.database import engine, Base, SessionLocal
 
-# Configure logging
+# --------------------------------------------------
+# Logging Configuration
+# --------------------------------------------------
 logging.basicConfig(
     level=logging.DEBUG if settings.DEBUG else logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -17,22 +21,27 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+# --------------------------------------------------
+# Lifespan (Startup / Shutdown)
+# --------------------------------------------------
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan handler"""
-    # Startup: Create database tables (skip if DB not available)
+    # Startup: Try to create database tables (but don't fail if DB not ready)
     try:
         Base.metadata.create_all(bind=engine)
         logger.info("Database tables created")
     except Exception as e:
-        logger.warning(f"Could not create database tables: {e}")
-        logger.warning("Database will be initialized by migrations")
+        logger.warning(f"Could not create database tables at startup: {e}")
+        logger.warning("Database will be initialized by alembic migrations")
     yield
-    # Shutdown: Cleanup if needed
+    # Shutdown
     logger.info("Application shutting down")
 
 
-# Create FastAPI application
+# --------------------------------------------------
+# FastAPI App Initialization
+# --------------------------------------------------
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
@@ -60,38 +69,47 @@ Use JWT Bearer token authentication. Get tokens via `/api/auth/login`.
     lifespan=lifespan
 )
 
-# Configure CORS
+# --------------------------------------------------
+# ✅ CORS CONFIGURATION (FIXED)
+# --------------------------------------------------
+# IMPORTANT:
+# This fixes the 400 preflight (OPTIONS) error from Vercel frontend
+# For hackathon usage, allowing all origins is acceptable.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins_list,
+    allow_origins=["*"],       # <-- FIX APPLIED HERE
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],       # Allows GET, POST, OPTIONS, etc.
+    allow_headers=["*"],       # Allows Content-Type, Authorization, etc.
 )
 
-# Import and include routers
+# --------------------------------------------------
+# Routers
+# --------------------------------------------------
 from app.api import api_router, redirect_router
 
-# Include API routes
+# API routes (prefixed with /api)
 app.include_router(api_router)
 
-# Include redirect router at root level (no /api prefix)
+# Redirect / public routes (no prefix)
 app.include_router(redirect_router)
 
 
-# Health check endpoint with database ping
+# --------------------------------------------------
+# Health Check
+# --------------------------------------------------
 @app.get("/health", tags=["Health"])
 async def health_check():
-    """Health check endpoint for monitoring - includes database connectivity test"""
+    """Health check endpoint with database ping"""
     db_status = "healthy"
     try:
         db = SessionLocal()
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         db.close()
     except Exception as e:
         db_status = f"unhealthy: {str(e)}"
         logger.error(f"Database health check failed: {e}")
-    
+
     return {
         "status": "healthy" if db_status == "healthy" else "degraded",
         "app": settings.APP_NAME,
@@ -100,9 +118,12 @@ async def health_check():
     }
 
 
+# --------------------------------------------------
+# Root Endpoint
+# --------------------------------------------------
 @app.get("/", tags=["Root"])
 async def root():
-    """Root endpoint with API information"""
+    """Root endpoint with API info"""
     return {
         "message": f"Welcome to {settings.APP_NAME}",
         "version": settings.APP_VERSION,
@@ -111,6 +132,9 @@ async def root():
     }
 
 
+# --------------------------------------------------
+# Local Development Entry Point
+# --------------------------------------------------
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
@@ -119,4 +143,3 @@ if __name__ == "__main__":
         port=8000,
         reload=settings.DEBUG
     )
-
