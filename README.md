@@ -21,11 +21,11 @@
 
 <div align="center">
 
-### 🚀 Deployed Application
+###  Deployed Application
 
 <h2>
   <a href="https://smart-link-hub-phi.vercel.app" title="deployed application frontend link" style="color: #22c55e; text-decoration: none; font-size: 24px;">
-    ✨ https://smart-link-hub-phi.vercel.app ✨
+     https://smart-link-hub-phi.vercel.app 
   </a>
 </h2>
 
