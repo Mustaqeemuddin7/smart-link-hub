@@ -29,8 +29,6 @@
   </a>
 </h2>
 
-**[Click to Access Live App →](https://smart-link-hub-phi.vercel.app)**
-
 </div>
 
 ---
