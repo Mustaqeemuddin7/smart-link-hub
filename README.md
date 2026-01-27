@@ -19,6 +19,15 @@
 
 ---
 
+<p align="center">
+  <strong>Deployed Application:</strong>
+  <a href="https://smart-link-hub-phi.vercel.app" title="deployed application">
+    https://smart-link-hub-phi.vercel.app
+  </a>
+</p>
+
+---
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -292,14 +301,14 @@ npm install
 # Create environment file
 cat > .env.local << EOF
 NEXT_PUBLIC_API_URL=https://smart-link-hub-backend.onrender.com/api
-NEXT_PUBLIC_APP_URL=https://smart-link-hub.vercel.app
+NEXT_PUBLIC_APP_URL=https://smart-link-hub-phi.vercel.app
 EOF
 
 # Start development server
 npm run dev -- -p 3001
 ```
 
-**Frontend is now running at:** https://smart-link-hub.vercel.app
+**Frontend is now running at:** https://smart-link-hub-phi.vercel.app
 
 ### Step 5: Access the Application
 
