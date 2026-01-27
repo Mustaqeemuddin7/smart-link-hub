@@ -713,8 +713,8 @@ docker-compose down
 1. Import project from GitHub
 2. Framework preset: **Next.js**
 3. Add environment variables:
-   - `NEXT_PUBLIC_API_URL` = Your Render backend URL
-   - `NEXT_PUBLIC_APP_URL` = Your Vercel domain
+   - `NEXT_PUBLIC_API_URL` = https://smart-link-hub-backend.onrender.com/api
+   - `NEXT_PUBLIC_APP_URL` = smart-link-hub-phi.vercel.app
 4. Deploy!
 
 ---
