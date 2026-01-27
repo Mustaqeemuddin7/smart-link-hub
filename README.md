@@ -19,12 +19,19 @@
 
 ---
 
-<p align="center">
-  <strong>Deployed Application:</strong>
-  <a href="https://smart-link-hub-phi.vercel.app" title="deployed application">
-    https://smart-link-hub-phi.vercel.app
+<div align="center">
+
+### 🚀 Deployed Application
+
+<h2>
+  <a href="https://smart-link-hub-phi.vercel.app" title="deployed application frontend link" style="color: #22c55e; text-decoration: none; font-size: 24px;">
+    ✨ https://smart-link-hub-phi.vercel.app ✨
   </a>
-</p>
+</h2>
+
+**[Click to Access Live App →](https://smart-link-hub-phi.vercel.app)**
+
+</div>
 
 ---
 
