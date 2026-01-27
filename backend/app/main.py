@@ -20,9 +20,13 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan handler"""
-    # Startup: Create database tables
-    Base.metadata.create_all(bind=engine)
-    logger.info("Database tables created")
+    # Startup: Create database tables (skip if DB not available)
+    try:
+        Base.metadata.create_all(bind=engine)
+        logger.info("Database tables created")
+    except Exception as e:
+        logger.warning(f"Could not create database tables: {e}")
+        logger.warning("Database will be initialized by migrations")
     yield
     # Shutdown: Cleanup if needed
     logger.info("Application shutting down")
