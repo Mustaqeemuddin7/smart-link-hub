@@ -21,15 +21,13 @@
 
 <div align="center">
 
-### 🚀 Deployed Application
+###  Deployed Application
 
 <h2>
   <a href="https://smart-link-hub-phi.vercel.app" title="deployed application frontend link" style="color: #22c55e; text-decoration: none; font-size: 24px;">
-    ✨ https://smart-link-hub-phi.vercel.app ✨
+     https://smart-link-hub-phi.vercel.app 
   </a>
 </h2>
-
-**[Click to Access Live App →](https://smart-link-hub-phi.vercel.app)**
 
 </div>
 
@@ -715,8 +713,8 @@ docker-compose down
 1. Import project from GitHub
 2. Framework preset: **Next.js**
 3. Add environment variables:
-   - `NEXT_PUBLIC_API_URL` = Your Render backend URL
-   - `NEXT_PUBLIC_APP_URL` = Your Vercel domain
+   - `NEXT_PUBLIC_API_URL` = https://smart-link-hub-backend.onrender.com/api
+   - `NEXT_PUBLIC_APP_URL` = smart-link-hub-phi.vercel.app
 4. Deploy!
 
 ---
